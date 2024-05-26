@@ -1,0 +1,130 @@
+# Import libraries
+
+from tkinter import *
+import subprocess
+
+
+#! Pembuatan window (Rafi Ramdhani)
+
+root = Tk()
+root.title('List')
+root.geometry('400x600')
+root.resizable(False, False)
+root.config(bg = '#D8F793')
+
+
+#! Pembuatan Icon Window (Rafi Ramdhani)
+
+app_icon = PhotoImage(file = 'Images/Icons/todoicon.png')
+root.iconphoto(False, app_icon)
+
+
+#^ Function penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+def kembali_launcher():
+    root.destroy()
+    subprocess.call(['python', 'Launcher.py'])
+
+
+#! Function pembuatan atau penggunaan file di dalam folder backend untuk diisi atau ditambahkan dengan string (Rafi Ramdhani)
+
+task = StringVar()
+task_list = []
+def opentask():
+    try:
+        global task_list
+        with open('Backend/tasklist.ppr','r') as taskfile:
+            tasks = taskfile.readlines()
+        for task in tasks:
+            if task != '\n':
+                task_list.append(task)
+                listbox.insert(END, task)
+    except:
+        file = open('Backend/tasklist.ppr', 'w')
+        file.close()
+
+
+#? Function pengambilan serta penambahan string di kolom entry (Danendra)
+
+def addtask():
+    task = task_entry.get()
+    task_entry.delete(0, END)
+    if task:
+        with open('Backend/tasklist.ppr', 'a') as taskfile:
+            taskfile.write(f'\n{task}')
+        task_list.append(task)
+        listbox.insert(END, task)
+
+
+#? Function pengambilan dan penghapusan string di listbox (Danendra)
+
+def deletetask():
+    global task_list
+    task = str(listbox.get(ANCHOR))
+    if task in task_list:
+        task_list.remove(task)
+        with open('Backend/tasklist.ppr', 'w') as taskfile:
+            for task in task_list:
+                taskfile.write(task + 'n')
+        listbox.delete(ANCHOR)
+
+
+#^ Function animasi tombol (Rafie Rojagat)
+
+def on_enter(event):
+    event.config(relief = SUNKEN)
+
+def on_leave(event):
+    event.config(relief = RAISED)
+
+
+#^ Pembuatan dan penempatan tombol kembali serta penggabungan dengan aktivasi function animasi dan penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+kembali = Button(root, text = '<', font = ('Helvetica', 19, 'bold'), width = 1, bg = '#601700', fg = 'white', command = kembali_launcher)
+kembali.place(x = 11, y = 5)
+kembali.bind('<Enter>', lambda x: on_enter(kembali))
+kembali.bind('<Leave>', lambda x: on_leave(kembali))  
+
+
+#! Pembuatan dan penempatan frame dan kolom entry (Rafi Ramdhani)
+
+entry = Frame(root, width = 355, height = 50, bg = '#E0BE36', borderwidth = 2, relief = RAISED)
+entry.place(x = 35, y = 5)
+task_entry = Entry(entry, width = 21, font = ('Helvetica', 18))
+task_entry.place(x = 10, y = 7)
+task_entry.focus()
+
+
+#? Pembuatan dan penempatan tombol tambah serta penggabungan dengan aktivasi function animasi dan pengambilan serta penambahan string di kolom entry (Danendra)
+
+tambahkan = Button(entry, text = '+', width = 3, bg = '#998650', fg = 'white', font = ('Arial', 20), command = addtask)
+tambahkan.place(x = 295, y = -3)
+tambahkan.bind('<Enter>', lambda x: on_enter(tambahkan))
+tambahkan.bind('<Leave>', lambda x: on_leave(tambahkan))  
+
+
+#^ Pembuatan dan penempatan frame dan listbox (Rafie Rojagat)
+
+list = Frame(root, width = 380, height = 462, bg = '#A0CA92', borderwidth = 2, relief = RAISED)
+list.place(x = 10, y = 55)
+listbox = Listbox(list, font = ('Helvetica', 15), width = 32, height = 18, cursor = 'hand2')
+listbox.place(x = 10, y = 7)
+
+
+#? Pembuatan dan penempatan tombol hapus serta penggabungan dengan aktivasi function animasi dan pengambilan serta pengambilan dan penghapusan string di listbox (Danendra)
+
+delete_icon = PhotoImage(file = 'Images/delete.png')
+delete = Button(root, image = delete_icon, width = 80, bg = '#D8F793', height = 80, bd = 0, command = deletetask)
+delete.place(x = 160, y = 520)
+delete.bind('<Enter>', lambda x: on_enter(delete))
+delete.bind('<Leave>', lambda x: on_leave(delete))
+
+
+#! Aktivasi function pembuatan atau penggunaan file di dalam folder backend untuk diisi atau ditambahkan dengan string (Rafi Ramdhani)
+
+opentask()
+
+
+# Pembuatan aplikasi
+
+root.mainloop()

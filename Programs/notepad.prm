@@ -1,0 +1,89 @@
+# Import libraries
+
+from tkinter import *
+from tkinter import filedialog
+import subprocess
+
+
+#! Pembuatan window (Rafi Ramdhani)
+
+root = Tk()
+root.geometry('600x600')
+root.title('Notepad')
+root.resizable(False, False)
+root.config(bg = '#ABFAA9')
+
+
+#! Pembuatan Icon Window (Rafi Ramdhani)
+
+app_icon = PhotoImage(file = 'Images/Icons/notepadicon.png')
+root.iconphoto(False, app_icon)
+
+
+#^ Function penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+def kembali_launcher():
+    root.destroy()
+    subprocess.call(['python', 'Launcher.py'])
+
+
+#? Function penyimpanan dan pembukaan file (Danendra)
+
+def save_file():
+    saving = filedialog.asksaveasfile(mode = 'w', defaultextension = '.txt')
+    if saving == None:
+        return
+    text = str(entry.get(1.0, END))
+    saving.write(text)
+    saving.close()
+
+def open_file():
+    file = filedialog.askopenfile(mode = 'r', filetypes = [('text files', '*.txt')])
+    if file != None:
+        isi = file.read()
+    else:
+        return
+    entry.insert(INSERT, isi)
+
+
+#^ Function animasi tombol (Rafie Rojagat)
+
+def on_enter(event):
+    event.config(relief = SUNKEN)
+
+def on_leave(event):
+    event.config(relief = RAISED)
+
+
+#^ Pembuatan dan penempatan tombol kembali serta penggabungan dengan aktivasi function animasi dan penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+kembali = Button(root, text = '<', font = ('Helvetica', 18, 'bold'), width = 3, bg = '#F6AE2D', fg = 'white', command = kembali_launcher)
+kembali.place(x = 10, y = 5)
+kembali.bind('<Enter>', lambda x: on_enter(kembali))
+kembali.bind('<Leave>', lambda x: on_leave(kembali))
+
+
+#? Pembuatan dan penempatan tombol save dan open serta penggabungan dengan aktivasi function animasi dan penyimpanan dan pembukaan file (Danendra)
+
+save_icon = PhotoImage(file = 'Images/save.png')
+save = Button(root, width = 50, height = 50, bg = '#ABFAA9', image = save_icon, bd = 0, command = save_file)
+save.place(x = 82, y = 5)
+save.bind('<Enter>', lambda x: on_enter(save))
+save.bind('<Leave>', lambda x: on_leave(save))
+
+open_icon = PhotoImage(file = 'Images/open.png')
+open = Button(root, width = 60, height = 65, bg = '#ABFAA9', image = open_icon, bd = 0, command = open_file)
+open.place(x = 145, y = -5)
+open.bind('<Enter>', lambda x: on_enter(open))
+open.bind('<Leave>', lambda x: on_leave(open))
+
+
+#! Pembuatan dan penempatan kolom entry (Rafi Ramdhani)
+
+entry = Text(root, height = 33, width = 72, wrap = WORD, bg = 'white', borderwidth = 2, relief = RAISED)
+entry.place(x = 10, y = 60)
+
+
+# Pembuatan aplikasi
+
+root.mainloop()

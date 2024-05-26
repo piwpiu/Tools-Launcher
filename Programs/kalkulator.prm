@@ -1,0 +1,185 @@
+# Import libaries
+
+from tkinter import *
+import subprocess
+
+
+#! Pembuatan window (Rafi Ramdhani)
+
+root = Tk()
+root.title('Kalkulator')
+root.resizable(False, False)
+root.geometry('400x600')
+root.config(bg = '#322E18')
+
+
+#! Pembuatan Icon Window (Rafi Ramdhani)
+
+app_icon = PhotoImage(file = 'Images/Icons/calculatoricon.png')
+root.iconphoto(False, app_icon)
+
+
+#^ Function penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+def kembali_launcher():
+    root.destroy()
+    subprocess.call(['python', 'Launcher.py'])
+
+
+#! Pembuatan dan penempatan kolom hitung (Rafi Ramdhani)
+
+kolom_hitung = Label(root, width = 25, height = 2, text = '', font = ('Helvetica', 31), bg = '#BBC2E2', borderwidth = 2, relief = RAISED)
+kolom_hitung.place(x = -80, y = 2)
+
+
+#? Function memunculkan angka di kolom hitung (Danendra)
+
+equation = ''
+def munculkan(x):
+    global equation
+    equation += x
+    kolom_hitung.config(text = equation)
+
+
+#^ Function menghitung angka yang ada di kolom hitung atau menunjukkan error (Rafie Rojagat)
+
+def hitung():
+    global equation
+    hasil = ''
+    if equation != '':
+        try:
+            hasil = eval(equation)
+        except:
+            hasil = 'error'
+            equation = ''
+    kolom_hitung.config(text = hasil)
+
+
+#! Function hapus isi kolom hitung (Rafi Ramdhani)
+
+def hapus():
+    global equation
+    equation = ''
+    kolom_hitung.config(text = equation)
+
+
+#^ Function animasi tombol (Rafie Rojagat)
+
+def on_enter(event):
+    event.config(relief = SUNKEN)
+
+def on_leave(event):
+    event.config(relief = RAISED)  
+
+
+#^ Pembuatan dan penempatan tombol kembali serta penggabungan dengan aktivasi function animasi dan penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+kembali = Button(root, text = '<', font = ('Helvetica', 23, 'bold'), width = 2, height = 2, bg = '#A38560', fg = 'white', command = kembali_launcher)
+kembali.place(x = 0, y = 2)
+kembali.bind('<Enter>', lambda x: on_enter(kembali))
+kembali.bind('<Leave>', lambda x: on_leave(kembali))      
+
+
+#! Pembuatan dan penempatan tombol reset serta penggabungan dengan aktivasi function animasi dan penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+reset = Button(root, text = 'C', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#BA1F33', fg = 'white',  command = lambda: hapus())
+reset.place(x = 10, y = 115)
+reset.bind('<Enter>', lambda x: on_enter(reset))
+reset.bind('<Leave>', lambda x: on_leave(reset))
+
+
+#? Pembuatan dan penempatan tombol angka dan penghitungan serta penggabungan dengan aktivasi function animasi dan function memunculkan angka di kolom hitung (Rafie Rojagat)
+
+bagi = Button(root, text = '/', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#847979', fg = 'white', command = lambda: munculkan('/'))
+bagi.place(x = 110, y = 115)
+bagi.bind('<Enter>', lambda x: on_enter(bagi))
+bagi.bind('<Leave>', lambda x: on_leave(bagi))
+
+modulus = Button(root, text = '%', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#847979', fg = 'white', command = lambda: munculkan('%'))
+modulus.place(x = 210, y = 115)
+modulus.bind('<Enter>', lambda x: on_enter(modulus))
+modulus.bind('<Leave>', lambda x: on_leave(modulus))
+
+kali = Button(root, text = 'x', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#847979', fg = 'white', command = lambda: munculkan('*'))
+kali.place(x = 310, y = 115)
+kali.bind('<Enter>', lambda x: on_enter(kali))
+kali.bind('<Leave>', lambda x: on_leave(kali))
+
+angka7 = Button(root, text = '7', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('7'))
+angka7.place(x = 10, y = 210)
+angka7.bind('<Enter>', lambda x: on_enter(angka7))
+angka7.bind('<Leave>', lambda x: on_leave(angka7))
+
+angka8 = Button(root, text = '8', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('8'))
+angka8.place(x = 110, y = 210)
+angka8.bind('<Enter>', lambda x: on_enter(angka8))
+angka8.bind('<Leave>', lambda x: on_leave(angka8))
+
+angka9 = Button(root, text = '9', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('9'))
+angka9.place(x = 210, y = 210)
+angka9.bind('<Enter>', lambda x: on_enter(angka9))
+angka9.bind('<Leave>', lambda x: on_leave(angka9))
+
+kurang = Button(root, text = '-', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#847979', fg = 'white', command = lambda: munculkan('-'))
+kurang.place(x = 310, y = 210)
+kurang.bind('<Enter>', lambda x: on_enter(kurang))
+kurang.bind('<Leave>', lambda x: on_leave(kurang))
+
+angka4 = Button(root, text = '4', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('4'))
+angka4.place(x = 10, y = 305)
+angka4.bind('<Enter>', lambda x: on_enter(angka4))
+angka4.bind('<Leave>', lambda x: on_leave(angka4))
+
+angka5 = Button(root, text = '5', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('5'))
+angka5.place(x = 110, y = 305)
+angka5.bind('<Enter>', lambda x: on_enter(angka5))
+angka5.bind('<Leave>', lambda x: on_leave(angka5))
+
+angka6 = Button(root, text = '6', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('6'))
+angka6.place(x = 210, y = 305)
+angka6.bind('<Enter>', lambda x: on_enter(angka6))
+angka6.bind('<Leave>', lambda x: on_leave(angka6))
+
+tambah = Button(root, text = '+', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#847979', fg = 'white', command = lambda: munculkan('+'))
+tambah.place(x = 310, y = 305)
+tambah.bind('<Enter>', lambda x: on_enter(tambah))
+tambah.bind('<Leave>', lambda x: on_leave(tambah))
+
+angka1 = Button(root, text = '1', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('1'))
+angka1.place(x = 10, y = 400)
+angka1.bind('<Enter>', lambda x: on_enter(angka1))
+angka1.bind('<Leave>', lambda x: on_leave(angka1))
+
+angka2 = Button(root, text = '2', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('2'))
+angka2.place(x = 110, y = 400)
+angka2.bind('<Enter>', lambda x: on_enter(angka2))
+angka2.bind('<Leave>', lambda x: on_leave(angka2))
+
+angka3 = Button(root, text = '3', width = 3, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('3'))
+angka3.place(x = 210, y = 400)
+angka3.bind('<Enter>', lambda x: on_enter(angka3))
+angka3.bind('<Leave>', lambda x: on_leave(angka3))
+
+angka0 = Button(root, text = '0', width = 7, height = 1, bg = '#B7B5E4', fg = 'white', font = ('Arial', 30, 'bold'), command = lambda: munculkan('0'))
+angka0.place(x = 12, y = 495)
+angka0.bind('<Enter>', lambda x: on_enter(angka0))
+angka0.bind('<Leave>', lambda x: on_leave(angka0))
+
+koma = Button(root, text = ',', width = 3, height = 1, font = ('Arial', 30, 'bold'), bg = '#255F85', fg = 'white', command = lambda: munculkan('.'))
+koma.place(x = 210, y = 495)
+koma.bind('<Enter>', lambda x: on_enter(koma))
+koma.bind('<Leave>', lambda x: on_leave(koma))
+
+
+#^ Pembuatan dan penempatan tombol sama dengan serta penggabungan dengan aktivasi function animasi dan menghitung angka yang ada di kolom hitung (Rafie Rojagat)
+
+sama_dengan = Button(root, text = '=', width = 3, height = 3, font = ('Arial', 30, 'bold'), bg = '#FF8C42', fg = 'white', command = lambda: hitung())
+sama_dengan.place(x = 310, y = 401)
+sama_dengan.bind('<Enter>', lambda x: on_enter(sama_dengan))
+sama_dengan.bind('<Leave>', lambda x: on_leave(sama_dengan))
+
+
+# Pembuatan aplikasi
+
+root.mainloop()
+

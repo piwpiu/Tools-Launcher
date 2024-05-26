@@ -1,0 +1,172 @@
+# Import libraries
+
+from tkinter import *
+from tkinter import ttk
+import subprocess
+
+
+#! Pembuatan window (Rafi Ramdhani)
+
+root = Tk()
+root.title('WHITEBOARD')
+root.geometry('1000x560')
+root.resizable(False, False)
+
+
+#! Pembuatan Icon Window (Rafi Ramdhani)
+
+app_icon = PhotoImage(file = 'Images/Icons/whiteboardicon.png')
+root.iconphoto(False, app_icon)
+
+
+#^ Function penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+def kembali_launcher():
+    root.destroy()
+    subprocess.call(['python', 'Launcher.py'])
+
+
+#? Function penggantian warna (Danendra)
+
+warna_sekarang = 'black'
+def bentuk_warna(warna_baru):
+    global warna_sekarang
+    warna_sekarang = warna_baru
+
+
+#! Function pembuatan kanvas baru (Rafi Ramdhani)
+
+def kanvas_baru():
+    kanvas.delete('all')
+
+
+#^ Function pengambilan ukuran float dari slider (Rafie Rojagat)
+
+ukuran_sekarang = DoubleVar()
+def get_ukuran_sekarang():
+    return ukuran_sekarang.get()
+
+
+#? Function pencarian kursor dan pembuatan garis dengan ukuran float (Danendra)
+
+def cari_xy(kerja):
+    global x_sekarang, y_sekarang
+    x_sekarang = kerja.x
+    y_sekarang = kerja.y
+
+def garis(kerja):
+    global x_sekarang, y_sekarang
+    kanvas.create_line((x_sekarang, y_sekarang, kerja.x, kerja.y), width = get_ukuran_sekarang(), fill = warna_sekarang, capstyle = ROUND, smooth = True)
+    x_sekarang = kerja.x
+    y_sekarang = kerja.y
+
+
+#^ Function animasi tombol (Rafie Rojagat)
+
+def on_enter(event):
+    event.config(relief = SUNKEN)
+
+def on_leave(event):
+    event.config(relief = RAISED)
+
+
+#^ Pembuatan dan penempatan tombol kembali serta penggabungan dengan aktivasi function animasi dan penutupan aplikasi untuk kembali ke launcher (Rafie Rojagat)
+
+kembali = Button(root, text = '<', font = ('Helvetica', 20, 'bold'), width = 3, bg = '#84C318', fg = 'white', command = kembali_launcher)
+kembali.place(x = 20, y = 15)
+kembali.bind('<Enter>', lambda x: on_enter(kembali))
+kembali.bind('<Leave>', lambda x: on_leave(kembali))
+
+
+#? Pembuatan dan penempatan tempat kotak warna (Danendra)
+
+kotak = Canvas(root, bg = '#D74E09', highlightthickness = 0, width = 56, height = 430, borderwidth = 2, relief = RAISED)
+kotak.place(x = 21, y = 75)
+
+kotak_warna = Canvas(root, bg = '#FF8811', highlightthickness = 0, width = 46, height = 320)
+kotak_warna.place(x = 27, y = 81)
+
+
+#? Pembuatan dan penempatan tombol warna serta penggabungan dengan aktivasi function animasi dan penggantian warna (Danendra)
+
+black = Button(kotak_warna, width = 2, bg = 'black', command = lambda: bentuk_warna('black')) 
+black.place(x = 10, y = 5)
+black.bind('<Enter>', lambda x: on_enter(black))
+black.bind('<Leave>', lambda x: on_leave(black))
+
+gray = Button(kotak_warna, width = 2, bg = 'gray', command = lambda: bentuk_warna('gray')) 
+gray.place(x = 10, y = 40)
+gray.bind('<Enter>', lambda x: on_enter(gray))
+gray.bind('<Leave>', lambda x: on_leave(gray))
+
+brown = Button(kotak_warna, width = 2, bg = 'brown', command = lambda: bentuk_warna('brown')) 
+brown.place(x = 10, y = 75)
+brown.bind('<Enter>', lambda x: on_enter(brown))
+brown.bind('<Leave>', lambda x: on_leave(brown))
+
+yellow = Button(kotak_warna, width = 2, bg = 'yellow', command = lambda: bentuk_warna('yellow')) 
+yellow.place(x = 10, y = 110)
+yellow.bind('<Enter>', lambda x: on_enter(yellow))
+yellow.bind('<Leave>', lambda x: on_leave(yellow))
+
+orange = Button(kotak_warna, width = 2, bg = 'orange', command = lambda: bentuk_warna('orange')) 
+orange.place(x = 10, y = 145)
+orange.bind('<Enter>', lambda x: on_enter(orange))
+orange.bind('<Leave>', lambda x: on_leave(orange))
+
+red = Button(kotak_warna, width = 2, bg = 'red', command = lambda: bentuk_warna('red')) 
+red.place(x = 10, y = 180)
+red.bind('<Enter>', lambda x: on_enter(red))
+red.bind('<Leave>', lambda x: on_leave(red))
+
+green = Button(kotak_warna, width = 2, bg = 'green', command = lambda: bentuk_warna('green')) 
+green.place(x = 10, y = 215)
+green.bind('<Enter>', lambda x: on_enter(green))
+green.bind('<Leave>', lambda x: on_leave(green))
+
+blue = Button(kotak_warna, width = 2, bg = 'blue', command = lambda: bentuk_warna('blue')) 
+blue.place(x = 10, y = 250)
+blue.bind('<Enter>', lambda x: on_enter(blue))
+blue.bind('<Leave>', lambda x: on_leave(blue))
+
+magenta = Button(kotak_warna, width = 2, bg = 'magenta', command = lambda: bentuk_warna('magenta')) 
+magenta.place(x = 10, y = 285)
+magenta.bind('<Enter>', lambda x: on_enter(magenta))
+magenta.bind('<Leave>', lambda x: on_leave(magenta))
+
+
+#? Pembuatan dan penempatan tombol penghapus serta penggabungan dengan aktivasi function animasi dan penggantian warna (Danendra)
+
+penghapus_icon = PhotoImage(file = 'Images/eraser.png')
+penghapus = Button(kotak, width = 50, height = 50, bd = 0, bg = '#D74E09', image = penghapus_icon, command = lambda: bentuk_warna('white')) 
+penghapus.place(x = 3, y = 330)
+penghapus.bind('<Enter>', lambda x: on_enter(penghapus))
+penghapus.bind('<Leave>', lambda x: on_leave(penghapus))
+
+
+#! Pembuatan dan penempatan tombol reset serta penggabungan dengan aktivasi function animasi dan kanvas baru (Rafi Ramdhani)
+
+reset_icon = PhotoImage(file = 'Images/reset.png')
+reset = Button(kotak, image = reset_icon, width = 54, height = 45, bd = 0, bg = '#D74E09', command = kanvas_baru)
+reset.place(x = 1, y = 380)
+reset.bind('<Enter>', lambda x: on_enter(reset))
+reset.bind('<Leave>', lambda x: on_leave(reset))
+
+
+#? Pembuatan dan penempatan kanvas menggambar serta penggabungan dengan aktivasi function pembuatan garis dengan ukuran float (Danendra)
+
+kanvas = Canvas(root, width = 880, height = 490, bg = 'white', cursor = 'hand2', borderwidth = 2, relief = RAISED)
+kanvas.place(x = 90, y = 15)
+kanvas.bind('<Button-1>', cari_xy)
+kanvas.bind('<B1-Motion>', garis)
+
+
+#^ Pembuatan dan penempatan slider serta penggabungan dengan function pengambilan ukuran float dari slider (Rafie Rojagat)
+
+slider = ttk.Scale(root, from_ = 0, to = 10, orient = 'horizontal', variable = ukuran_sekarang)
+slider.place(x = 22, y = 525)
+
+
+# Pembuatan aplikasi
+
+root.mainloop()
